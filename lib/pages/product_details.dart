@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ecomapp/main.dart';
+import 'home.dart';
 
 class ProductDetails extends StatefulWidget {
   final product_detail_name;
@@ -29,7 +30,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => new HomePage(),
+                builder: (context) => HomePage(),
               ),
             );
           },
