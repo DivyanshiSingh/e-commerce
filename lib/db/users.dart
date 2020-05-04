@@ -5,9 +5,10 @@ class UserServices {
   String ref = "users";
 
   createUser(Map value) {
+    String id = value["userId"];
     _database
         .reference()
-        .child(ref)
+        .child("$ref/$id")
         .push()
         .set(value)
         .catchError((e) => {print(e.toString())});

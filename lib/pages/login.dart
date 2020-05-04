@@ -34,6 +34,11 @@ class _LoginState extends State<Login> {
     });
     // preferences = await SharedPreferences.getInstance();
     // isLoggedin = await googleSignIn.isSignedIn();
+    await firebaseAuth.currentUser().then((user) {
+      if (user != null) {
+        setState(() => isLoggedin = true);
+      }
+    });
     if (isLoggedin) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomePage()));
