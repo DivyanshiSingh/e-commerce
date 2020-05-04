@@ -1,3 +1,4 @@
+import 'package:ecomapp/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final GoogleSignIn googleSignIn = new GoogleSignIn();
+  // final GoogleSignIn googleSignIn = new GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailTextController = TextEditingController();
@@ -31,8 +32,8 @@ class _LoginState extends State<Login> {
     setState(() {
       loading = true;
     });
-    preferences = await SharedPreferences.getInstance();
-    isLoggedin = await googleSignIn.isSignedIn();
+    // preferences = await SharedPreferences.getInstance();
+    // isLoggedin = await googleSignIn.isSignedIn();
     if (isLoggedin) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -42,54 +43,57 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Future<FirebaseUser> handleSignIn() async {
-    preferences = await SharedPreferences.getInstance();
-    setState(() {
-      loading = true;
-    });
-    GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    FirebaseUser firebaseUser =
-        (await firebaseAuth.signInWithCredential(credential)).user;
-    print(firebaseUser);
-    if (firebaseUser != null) {
-      final QuerySnapshot result = await Firestore.instance
-          .collection("User")
-          .where("id", isEqualTo: firebaseUser.uid)
-          .getDocuments();
-      final List<DocumentSnapshot> documents = result.documents;
-      if (documents.length == 0) {
-        // insert the user to our collections.
-        Firestore.instance
-            .collection("user")
-            .document(firebaseUser.uid)
-            .setData({
-          "id": firebaseUser.uid,
-          "username": firebaseUser.displayName,
-          "profilePicture": firebaseUser.photoUrl
-        });
-        await preferences.setString("id", firebaseUser.uid);
-        await preferences.setString("username", firebaseUser.displayName);
-        await preferences.setString("photoUrl", firebaseUser.displayName);
-      } else {
-        await preferences.setString("id", documents[0]['id']);
-        await preferences.setString("username", documents[0]['username']);
-        await preferences.setString("photoUrl", documents[0]['photoUrl']);
-      }
-      Fluttertoast.showToast(msg: "Login was successful");
+  // Future<FirebaseUser> handleSignIn() async {
+  //   preferences = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     loading = true;
+  //   });
+  // GoogleSignInAccount googleUser = await googleSignIn.signIn();
+  // GoogleSignInAuthentication googleSignInAuthentication =
+  //     await googleUser.authentication;
+  // final AuthCredential credential = GoogleAuthProvider.getCredential(
+  //   accessToken: googleSignInAuthentication.accessToken,
+  //   idToken: googleSignInAuthentication.idToken,
+  // );
+  // FirebaseUser firebaseUser =
+  //     (await firebaseAuth.signInWithCredential(credential)).user;
+  // print(firebaseUser);
+  // if (firebaseUser != null) {
+  //   final QuerySnapshot result = await Firestore.instance
+  //       .collection("User")
+  //       .where("id", isEqualTo: firebaseUser.uid)
+  //       .getDocuments();
+  //   final List<DocumentSnapshot> documents = result.documents;
+  //   if (documents.length == 0) {
+  //     // insert the user to our collections.
+  //     Firestore.instance
+  //         .collection("user")
+  //         .document(firebaseUser.uid)
+  //         .setData({
+  //       "id": firebaseUser.uid,
+  //       "username": firebaseUser.displayName,
+  //       "profilePicture": firebaseUser.photoUrl
+  //     });
+  //     await preferences.setString("id", firebaseUser.uid);
+  //     await preferences.setString("username", firebaseUser.displayName);
+  //     await preferences.setString("photoUrl", firebaseUser.displayName);
+  //   } else {
+  //     await preferences.setString("id", documents[0]['id']);
+  //     await preferences.setString("username", documents[0]['username']);
+  //     await preferences.setString("photoUrl", documents[0]['photoUrl']);
+  //   }
+  //   Fluttertoast.showToast(msg: "Login was successful");
 
-      setState(() {
-        loading = false;
-      });
-    } else {}
-    isSignedIn();
-    return firebaseUser;
-  }
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+  //   } else {
+  //     Fluttertoast.showToast(msg: "Login failed :(");
+  //   }
+  //   // isSignedIn();
+  //   // return firebaseUser;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,20 +102,20 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           Image.asset(
             'images/background.jpg',
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
+          // Container(
+          //   alignment: Alignment.topCenter,
+          //   child: Image.asset(
+          //     "images/logo.jpg",
+          //     width: 100,
+          //     height: 100,
+          //   ),
+          // ),
           Container(
-            alignment: Alignment.topCenter,
-            child: Image.asset(
-              "images/logo.jpg",
-              width: 100,
-              height: 100,
-            ),
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withOpacity(0.7),
             width: double.infinity,
             height: double.infinity,
           ),
@@ -120,10 +124,10 @@ class _LoginState extends State<Login> {
             child: Center(
               child: Form(
                 key: _formKey,
-                child: Column(
+                child: ListView(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white.withOpacity(0.8),
@@ -152,7 +156,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white.withOpacity(0.8),
@@ -178,7 +182,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.red,
@@ -198,36 +202,57 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    Divider(
-                      color: Colors.white,
-                    ),
-                    Text(
-                      "Other login option",
-                      style: TextStyle(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        "Forgot password ?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.red,
-                        elevation: 0.0,
-                        child: MaterialButton(
-                          onPressed: () => handleSignIn()
-                              .then((FirebaseUser user) => print(user))
-                              .catchError((e) => print(e)),
-                          minWidth: MediaQuery.of(context).size.width,
-                          child: Text(
-                            "Google",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
+                        padding: const EdgeInsets.all(8),
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUp()));
+                            },
+                            child: Text("Sign up",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.blue))))
+
+                    // Divider(
+                    //   color: Colors.white,
+                    // ),
+                    // Text(
+                    //   "Other login option",
+                    //   style: TextStyle(color: Colors.white),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Material(
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     color: Colors.red,
+                    //     elevation: 0.0,
+                    //     child: MaterialButton(
+                    //       onPressed: () => handleSignIn()
+                    //           .then((FirebaseUser user) => print(user))
+                    //           .catchError((e) => print(e)),
+                    //       minWidth: MediaQuery.of(context).size.width,
+                    //       child: Text(
+                    //         "Google",
+                    //         textAlign: TextAlign.center,
+                    //         style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 20,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -247,15 +272,6 @@ class _LoginState extends State<Login> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: Container(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
-          child: FlatButton(
-            color: Colors.red.shade900,
-          ),
-        ),
       ),
     );
   }
