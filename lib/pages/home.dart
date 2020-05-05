@@ -1,16 +1,36 @@
+import 'package:ecomapp/pages/login.dart';
+import 'package:ecomapp/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:ecomapp/components/horizontal_listview.dart';
 import 'package:ecomapp/components/products.dart';
 import 'package:ecomapp/pages/cart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  // GoogleSignIn _googleSignIn;
+  // HomePage(GoogleSignIn googleSignIn){
+  //   _googleSignIn = googleSignIn;
+  // }
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  String userName;
+  String email;
+  void getUserDetails() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString("username");
+    email = prefs.getString("email");
+
+  }
   @override
+  void initState() {
+    super.initState();
+    getUserDetails();
+  }
   Widget build(BuildContext context) {
     Widget imageCarousel = new Container(
       height: 200.0,
@@ -61,8 +81,8 @@ class _HomePageState extends State<HomePage> {
           child: new ListView(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: Text('Divyanshi Singh'),
-                accountEmail: Text('divyanshipilot@gmail.com'),
+                accountName: Text('$userName'),
+                accountEmail: Text('$email'),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
                     backgroundColor: Colors.grey,
@@ -111,9 +131,12 @@ class _HomePageState extends State<HomePage> {
               ),
               Divider(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  signOutGoogle();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                },
                 child: ListTile(
-                  title: Text('Settings'),
+                  title: Text('Logout'),
                   leading: Icon(
                     Icons.settings,
                     color: Colors.black,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ecomapp/main.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'home.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -27,12 +28,12 @@ class _ProductDetailsState extends State<ProductDetails> {
         title: InkWell(
           child: Text('Market at Home'),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     // builder: (context) => HomePage(),
+            //   ),
+            // );
           },
         ),
         actions: <Widget>[
