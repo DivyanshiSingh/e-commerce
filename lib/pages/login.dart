@@ -33,20 +33,21 @@ class _LoginState extends State<Login> {
       loading = true;
     });
     preferences = await SharedPreferences.getInstance();
-    isLoggedin = await googleSignIn.isSignedIn();
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    await firebaseAuth.currentUser().then((user) async {
+    // isLoggedin = await googleSignIn.isSignedIn();
+    isLoggedin = await isUser();
+    // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    // await firebaseAuth.currentUser().then((user) async {
     
-      if (user != null) {
-          var token = await user.getIdToken();
-        if(token == null){
-          setState(() => {
-            isLoggedin = false
-          });
-        }
-        setState(() => isLoggedin = true);
-      }
-    });
+    //   if (user != null) {
+    //       var token = await user.getIdToken();
+    //     if(token == null){
+    //       setState(() => {
+    //         isLoggedin = false
+    //       });
+    //     }
+    //     setState(() => isLoggedin = true);
+    //   }
+    // });
     print('Here');
     if (isLoggedin) {
       Navigator.pushReplacement(

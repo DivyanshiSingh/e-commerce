@@ -21,3 +21,9 @@ void signOutGoogle() async{
   await googleSignIn.signOut();
   print('user signed out');
 }
+
+Future<bool> isUser() async {
+  bool status;
+  status = await googleSignIn.isSignedIn();
+  return status;
+}
