@@ -25,114 +25,117 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Image.asset(
-            'images/background.jpg',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.5),
-            width: double.infinity,
-            height: double.infinity,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                'images/cart.png',
+                width: 120,
+              ),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 200.0),
+            padding: const EdgeInsets.only(top: 0.0),
             child: Center(
               child: Form(
                 key: _formKey,
-                child: ListView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.grey.withOpacity(0.2),
                         elevation: 0.0,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 12),
-                          child: TextFormField(
-                            controller: _nameTextController,
-                            decoration: InputDecoration(
-                              hintText: "User Name",
-                              icon: Icon(Icons.person_outline),
-                              border: InputBorder.none,
+                          child: ListTile(
+                            title: TextFormField(
+                              controller: _nameTextController,
+                              decoration: InputDecoration(
+                                hintText: "User Name",
+                                icon: Icon(Icons.person_outline),
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "The name field cannot be empty";
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "The name field cannot be empty";
-                              }
-                              return null;
-                            },
                           ),
                         ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                    //   child: Material(
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     color: Colors.grey.withOpacity(0.2),
+                    //     elevation: 0.0,
+                    //     child: Row(
+                    //       children: <Widget>[
+                    //         Expanded(
+                    //           child: ListTile(
+                    //             title: Text(
+                    //               "male",
+                    //               textAlign: TextAlign.end,
+                    //               style: TextStyle(color: Colors.black),
+                    //             ),
+                    //             trailing: Radio(
+                    //                 value: "male",
+                    //                 groupValue: groupValue,
+                    //                 onChanged: (e) => valueChanged(e)),
+                    //           ),
+                    //         ),
+                    //         Expanded(
+                    //           child: ListTile(
+                    //             title: Text(
+                    //               "female",
+                    //               textAlign: TextAlign.end,
+                    //               style: TextStyle(color: Colors.black),
+                    //             ),
+                    //             trailing: Radio(
+                    //                 value: "female",
+                    //                 groupValue: groupValue,
+                    //                 onChanged: (e) => valueChanged(e)),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8),
-                        elevation: 0.0,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: ListTile(
-                                title: Text(
-                                  "male",
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                trailing: Radio(
-                                    value: "male",
-                                    groupValue: groupValue,
-                                    onChanged: (e) => valueChanged(e)),
-                              ),
-                            ),
-                            Expanded(
-                              child: ListTile(
-                                title: Text(
-                                  "female",
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                trailing: Radio(
-                                    value: "female",
-                                    groupValue: groupValue,
-                                    onChanged: (e) => valueChanged(e)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.grey.withOpacity(0.2),
                         elevation: 0.0,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 12),
-                          child: TextFormField(
-                            controller: _emailTextController,
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                              icon: Icon(Icons.alternate_email),
-                              border: InputBorder.none,
+                          child: ListTile(
+                            title: TextFormField(
+                              controller: _emailTextController,
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                icon: Icon(Icons.alternate_email),
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  Pattern pattern =
+                                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                  RegExp regex = new RegExp(pattern);
+                                  if (!regex.hasMatch(value))
+                                    return 'Please make sure your email address is valid';
+                                  else
+                                    return null;
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                Pattern pattern =
-                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                RegExp regex = new RegExp(pattern);
-                                if (!regex.hasMatch(value))
-                                  return 'Please make sure your email address is valid';
-                                else
-                                  return null;
-                              }
-                            },
                           ),
                         ),
                       ),
@@ -175,7 +178,6 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
@@ -221,7 +223,7 @@ class _SignUpState extends State<SignUp> {
                       padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
                       child: Material(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.red.shade700,
+                        color: Colors.deepOrange,
                         elevation: 0.0,
                         child: MaterialButton(
                           onPressed: () async {
@@ -240,47 +242,63 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-
                     Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Login",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.blue))))
-
-                    // Divider(
-                    //   color: Colors.white,
-                    // ),
-                    // Text(
-                    //   "Other login option",
-                    //   style: TextStyle(color: Colors.white),
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Material(
-                    //     borderRadius: BorderRadius.circular(20),
-                    //     color: Colors.red,
-                    //     elevation: 0.0,
-                    //     child: MaterialButton(
-                    //       onPressed: () => handleSignIn()
-                    //           .then((FirebaseUser user) => print(user))
-                    //           .catchError((e) => print(e)),
-                    //       minWidth: MediaQuery.of(context).size.width,
-                    //       child: Text(
-                    //         "Google",
-                    //         textAlign: TextAlign.center,
-                    //         style: TextStyle(
-                    //           color: Colors.white,
-                    //           fontWeight: FontWeight.bold,
-                    //           fontSize: 20,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
+                      padding: const EdgeInsets.all(8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "I already have an account",
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: Colors.deepOrange, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Divider(),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text("Or Sign up with",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.grey))),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Divider(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //  FACEBOOK AND GOOGLE ICONS
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                          child: MaterialButton(
+                            onPressed: () {},
+                            child: Image.asset("images/fb.png", width: 60),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                          child: MaterialButton(
+                            onPressed: () {},
+                            child: Image.asset("images/ggg.png", width: 60),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
