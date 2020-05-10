@@ -65,11 +65,13 @@ class _LoginState extends State<Login> {
     });
 
   FirebaseUser firebaseUser =await signInWithGoogle();
+  print(firebaseUser.photoUrl);
   if (firebaseUser != null) {
     final QuerySnapshot result = await Firestore.instance
-        .collection("User")
+        .collection("user")
         .where("id", isEqualTo: firebaseUser.uid)
         .getDocuments();
+    print(result.documents[0]);
     final List<DocumentSnapshot> documents = result.documents;
     if (documents.length == 0) {
       // insert the user to our collections.
@@ -79,16 +81,18 @@ class _LoginState extends State<Login> {
           .setData({
         "id": firebaseUser.uid,
         "username": firebaseUser.displayName,
-        "profilePicture": firebaseUser.photoUrl
+        "profilePicture": firebaseUser.photoUrl,
+        "email": firebaseUser.email,
       });
+
       await preferences.setString("id", firebaseUser.uid);
       await preferences.setString("username", firebaseUser.displayName);
-      await preferences.setString("photoUrl", firebaseUser.displayName);
+      await preferences.setString("photoUrl", firebaseUser.photoUrl);
       await preferences.setString("email", firebaseUser.email);
     } else {
       await preferences.setString("id", documents[0]['id']);
       await preferences.setString("username", documents[0]['username']);
-      await preferences.setString("photoUrl", documents[0]['photoUrl']);
+      await preferences.setString("photoUrl", documents[0]['profilePicture']);
       await preferences.setString("email", documents[0]['email']);
     }
     Fluttertoast.showToast(msg: "Login was successful");
@@ -115,14 +119,6 @@ class _LoginState extends State<Login> {
             width: double.infinity,
             height: double.infinity,
           ),
-          // Container(
-          //   alignment: Alignment.topCenter,
-          //   child: Image.asset(
-          //     "images/logo.jpg",
-          //     width: 100,
-          //     height: 100,
-          //   ),
-          // ),
           Container(
             color: Colors.black.withOpacity(0.7),
             width: double.infinity,
@@ -251,7 +247,7 @@ class _LoginState extends State<Login> {
                         elevation: 0.0,
                         child: MaterialButton(
                           onPressed: () => handleSignIn()
-                              .then((FirebaseUser user) => print(user))
+                              .then((FirebaseUser user) => print(user.displayName))
                               .catchError((e) => print(e)),
                           minWidth: MediaQuery.of(context).size.width,
                           child: Text(

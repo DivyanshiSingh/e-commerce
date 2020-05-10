@@ -20,11 +20,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String userName;
   String email;
+  String photoUrl;
   void getUserDetails() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userName = prefs.getString("username");
     email = prefs.getString("email");
-
+    photoUrl = prefs.getString("photoUrl");
+    print(userName);
+    print(email);
+    print(photoUrl);
   }
   @override
   void initState() {
@@ -85,8 +89,7 @@ class _HomePageState extends State<HomePage> {
                 accountEmail: Text('$email'),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, color: Colors.white),
+                    backgroundImage: NetworkImage('$photoUrl'),
                   ),
                 ),
                 decoration: new BoxDecoration(color: Colors.red),
